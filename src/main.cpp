@@ -1,9 +1,12 @@
+#include <iostream>
 #include <SFML/Graphics.hpp>
+
+#include "Dinosaur.h"
 
 int main()
 {
-    auto window = sf::RenderWindow({1920u, 1080u}, "CMake SFML Project");
-    window.setFramerateLimit(144);
+    auto window = sf::RenderWindow({ 800u, 600u }, "SFML Simple Game");
+    window.setFramerateLimit(60);
 
     while (window.isOpen())
     {
@@ -15,7 +18,15 @@ int main()
             }
         }
 
-        window.clear();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            std::cout << "jump\n";
+        }
+
+        auto dinosaur = Dinosaur();
+
+        window.clear(sf::Color::White);
+        window.draw(dinosaur);
         window.display();
     }
 }
