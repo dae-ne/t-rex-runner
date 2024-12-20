@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "Dinosaur.h"
+#include "Dinosaur.hpp"
 
 int main()
 {
@@ -23,7 +23,7 @@ int main()
             std::cout << "jump\n";
         }
 
-        auto dinosaur = Dinosaur();
+        auto dinosaur = trex::Dinosaur();
 
         window.clear(sf::Color::White);
         window.draw(dinosaur);
