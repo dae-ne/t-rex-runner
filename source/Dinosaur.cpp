@@ -1,11 +1,11 @@
 #include "Dinosaur.hpp"
 
-trex::Dinosaur::Dinosaur()
+trex::Dinosaur::Dinosaur(sf::Texture& texture)
 {
-    shape.setSize(sf::Vector2f(100.f, 100.f));
-    shape.setFillColor(sf::Color::Red);
-    shape.setOrigin({ 0.f,  shape.getGlobalBounds().height });
-    shape.setPosition({ 100.f, 400.f });
+    sprite.setTexture(texture);
+    sprite.setTextureRect({ 677, 2, 44, 46 });
+    sprite.setOrigin({ 0.f,  sprite.getGlobalBounds().height });
+    sprite.setPosition({ 100.f, 400.f });
 }
 
 void trex::Dinosaur::jump()
@@ -13,21 +13,21 @@ void trex::Dinosaur::jump()
     if (currentJumpHight > 0)
         return;
 
-    currentJumpSpeed = 10.f;
+    currentJumpSpeed = 4.f;
     state = State::Jumping;
 }
 
 void trex::Dinosaur::update()
 {
-    auto position = shape.getPosition();
+    auto position = sprite.getPosition();
 
     currentJumpHight += currentJumpSpeed;
-    shape.setPosition({ position.x, 400.f - currentJumpHight });
+    sprite.setPosition({ position.x, 400.f - currentJumpHight });
 
     if (currentJumpHight > 0.f)
     {
         state = State::Jumping;
-        currentJumpSpeed -= 0.2f;
+        currentJumpSpeed -= 0.1f;
         return;
     }
 
@@ -38,5 +38,5 @@ void trex::Dinosaur::update()
 
 void trex::Dinosaur::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
-    target.draw(shape);
+    target.draw(sprite);
 }

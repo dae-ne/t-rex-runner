@@ -22,6 +22,14 @@ target_link_libraries(main PRIVATE sfml-graphics)
 target_compile_features(main PRIVATE cxx_std_17)
 target_include_directories(main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+add_custom_target(copy_data
+	COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different 
+        ${CMAKE_CURRENT_SOURCE_DIR}/assets
+        $<TARGET_FILE_DIR:main>/assets
+    COMMENT "Copying assets"
+)
+add_dependencies(main copy_data)
+
 if(WIN32)
     add_custom_command(
         TARGET main

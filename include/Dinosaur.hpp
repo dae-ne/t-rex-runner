@@ -9,13 +9,13 @@ namespace trex
         enum class State { Running, Jumping };
 
     public:
-        Dinosaur();
+        Dinosaur(sf::Texture&);
 
         void jump();
         void update();
 
     private:
-        sf::RectangleShape shape;
+        sf::Sprite sprite;
         State state = State::Running;
 
         float currentJumpHight = 0;
