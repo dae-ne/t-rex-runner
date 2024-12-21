@@ -5,7 +5,7 @@
 
 int main()
 {
-    auto window = sf::RenderWindow({ 800u, 600u }, "SFML Simple Game");
+    auto window = sf::RenderWindow({ 800u, 600u }, "T-Rex Runner");
     window.setFramerateLimit(60);
 
     auto textures = sf::Texture();
@@ -17,6 +17,7 @@ int main()
     }
 
     auto dinosaur = trex::Dinosaur(textures);
+    auto clock = sf::Clock();
 
     while (window.isOpen())
     {
@@ -31,7 +32,8 @@ int main()
             dinosaur.jump();
         }
 
-        dinosaur.update();
+        auto elapsedTime = clock.getElapsedTime().asMilliseconds();
+        dinosaur.update(elapsedTime);
 
         window.clear(sf::Color::Red);
         window.draw(dinosaur);

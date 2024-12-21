@@ -12,7 +12,7 @@ namespace trex
         Dinosaur(sf::Texture&);
 
         void jump();
-        void update();
+        void update(int elapsedTime);
 
     private:
         sf::Sprite sprite;

@@ -10,14 +10,16 @@ trex::Dinosaur::Dinosaur(sf::Texture& texture)
 
 void trex::Dinosaur::jump()
 {
-    if (currentJumpHight > 0)
+    if (currentJumpHight > 0.f)
         return;
 
     currentJumpSpeed = 4.f;
     state = State::Jumping;
+
+    sprite.setTextureRect({ 677, 2, 44, 46 });
 }
 
-void trex::Dinosaur::update()
+void trex::Dinosaur::update(int elapsedTime)
 {
     auto position = sprite.getPosition();
 
@@ -34,6 +36,10 @@ void trex::Dinosaur::update()
     state = State::Running;
     currentJumpSpeed = 0.f;
     currentJumpHight = 0.f;
+
+    elapsedTime % 200 < 100
+        ? sprite.setTextureRect({ 765, 2, 44, 46 })
+        : sprite.setTextureRect({ 809, 2, 44, 46 });
 }
 
 void trex::Dinosaur::draw(sf::RenderTarget& target, sf::RenderStates) const
