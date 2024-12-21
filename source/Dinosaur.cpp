@@ -5,7 +5,7 @@ trex::Dinosaur::Dinosaur(sf::Texture& texture)
     sprite.setTexture(texture);
     sprite.setTextureRect({ 677, 2, 44, 46 });
     sprite.setOrigin({ 0.f,  sprite.getGlobalBounds().height });
-    sprite.setPosition({ 100.f, 400.f });
+    sprite.setPosition({ 40.f, 180.f });
 }
 
 void trex::Dinosaur::jump()
@@ -13,7 +13,7 @@ void trex::Dinosaur::jump()
     if (currentJumpHight > 0.f)
         return;
 
-    currentJumpSpeed = 4.f;
+    currentJumpSpeed = 10.f;
     state = State::Jumping;
 
     sprite.setTextureRect({ 677, 2, 44, 46 });
@@ -24,12 +24,12 @@ void trex::Dinosaur::update(int elapsedTime)
     auto position = sprite.getPosition();
 
     currentJumpHight += currentJumpSpeed;
-    sprite.setPosition({ position.x, 400.f - currentJumpHight });
+    sprite.setPosition({ position.x, 180.f - currentJumpHight });
 
     if (currentJumpHight > 0.f)
     {
         state = State::Jumping;
-        currentJumpSpeed -= 0.1f;
+        currentJumpSpeed -= 0.4f;
         return;
     }
 

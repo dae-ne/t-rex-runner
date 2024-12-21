@@ -5,7 +5,7 @@
 
 int main()
 {
-    auto window = sf::RenderWindow({ 800u, 600u }, "T-Rex Runner");
+    auto window = sf::RenderWindow({ 600u, 200u }, "T-Rex Runner", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
 
     auto textures = sf::Texture();
