@@ -2,8 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 
-#define TREX_WIDTH 44
-#define TREX_HEIGHT 47
+#include "animations.hpp"
+#include "sprites.hpp"
+
+#define TREX_MIN_Y_POSITION 180.f
 
 namespace trex
 {
@@ -12,15 +14,18 @@ namespace trex
         enum class State { Running, Jumping };
 
     public:
-        Dinosaur(sf::Texture&);
+        Dinosaur(SpriteManager&, AnimationsManager&);
 
         void jump();
         void update(int elapsedTime);
 
     private:
-        sf::Sprite sprite;
         State state = State::Running;
 
+        SpriteManager& spriteManager;
+        AnimationsManager& animationsManager;
+
+        sf::Vector2f position = { 40.f, TREX_MIN_Y_POSITION };
         float currentJumpHight = 0.f;
         float currentJumpSpeed = 0.f;
 

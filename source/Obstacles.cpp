@@ -1,56 +1,30 @@
-#include "Obstacles.hpp"
-
-trex::Obstacle::Obstacle(sf::Texture& texture)
-{
-    sprite.setTexture(texture);
-    sprite.setPosition({ 600.f, 180.f });
-}
+#include "obstacles.hpp"
 
 void trex::Obstacle::update(int elapsedTime)
 {
-    sprite.move(-2.f, 0.f);
+    position.x -= 2.0f;
 }
 
-float trex::Obstacle::getXPosition() const
+void trex::ObstacleSmallCactus::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    return sprite.getPosition().x;
+    spriteManager.setSprite(SpriteManager::SpriteType::SmallCactus, position);
+    target.draw(spriteManager.getSprite());
 }
 
-void trex::Obstacle::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void trex::ObstacleLargeCactus::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(sprite, states);
+    spriteManager.setSprite(SpriteManager::SpriteType::LargeCactus, position);
+    target.draw(spriteManager.getSprite());
 }
 
-trex::ObstacleSmallCactus::ObstacleSmallCactus(sf::Texture& texture)
-    : Obstacle(texture)
+void trex::ObstacleBird::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    sprite.setTextureRect({ 92, 0, 17, 35 });
-    sprite.setOrigin({ 0.f,  sprite.getGlobalBounds().height });
-}
-
-trex::ObstacleLargeCactus::ObstacleLargeCactus(sf::Texture& texture)
-    : Obstacle(texture)
-{
-    sprite.setTextureRect({ 109, 0, 25, 50 });
-    sprite.setOrigin({ 0.f,  sprite.getGlobalBounds().height });
-    sprite.move(0.f, 2.f);
-}
-
-trex::ObstacleBird::ObstacleBird(sf::Texture& texture)
-    : Obstacle(texture)
-{
-    sprite.setTextureRect({ 0, 0, 46, 39 });
-    sprite.setOrigin({ 0.f,  sprite.getGlobalBounds().height });
-}
-
-void trex::ObstacleBird::update(int elapsedTime)
-{
-    trex::Obstacle::update(elapsedTime);
-}
-
-trex::ObstacleManager::ObstacleManager(sf::Texture& texture)
-{
-    this->texture = texture;
+    auto spriteType = animationsManager.getCurrentFrame() > animationsManager.getFramesNumber() / 2
+        ? SpriteManager::SpriteType::BirdAnimation1
+        : SpriteManager::SpriteType::BirdAnimation2;
+    
+    spriteManager.setSprite(spriteType, position);
+    target.draw(spriteManager.getSprite());
 }
 
 void trex::ObstacleManager::generateRandomObstacle()
@@ -60,13 +34,13 @@ void trex::ObstacleManager::generateRandomObstacle()
     switch (selection)
     {
     case 0:
-        obstacles.push(new ObstacleSmallCactus(texture));
+        obstacles.push(new ObstacleSmallCactus(spriteManager));
         break;
     case 1:
-        obstacles.push(new ObstacleLargeCactus(texture));
+        obstacles.push(new ObstacleLargeCactus(spriteManager));
         break;
     case 2:
-        obstacles.push(new ObstacleBird(texture));
+        obstacles.push(new ObstacleBird(spriteManager, animationsManager));
         break;
     }
 }
@@ -98,7 +72,7 @@ void trex::ObstacleManager::updateObstacles(int elapsedTime)
         obstacles.push(obstacle);
     }
 
-    if (obstacles.front()->getXPosition() < 50.0f)
+    if (obstacles.front()->getPositionX() < 50.f)
     {
         popObstacle();
     }

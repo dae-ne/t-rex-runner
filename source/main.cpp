@@ -1,29 +1,28 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "Dinosaur.hpp"
-#include "Obstacles.hpp"
-#include "Textures.hpp"
+#include "animations.hpp"
+#include "dinosaur.hpp"
+#include "obstacles.hpp"
+#include "sprites.hpp"
 
 int main()
 {
     auto window = sf::RenderWindow({ 600u, 200u }, "T-Rex Runner", sf::Style::Titlebar | sf::Style::Close);
     window.setFramerateLimit(60);
 
-    auto texturesManager = trex::TexturesManager::getInstance();
+    auto spriteManager = trex::SpriteManager();
+    auto animationsManager = trex::AnimationsManager(8, 100);
 
-    if (!texturesManager->loadFiles())
+    if (!spriteManager.loadTextureFromFile())
     {
-        std::cerr << "Failed to load textures\n";
+        std::cerr << "Failed to load texture\n";
         exit(1);
     }
-
-    auto trexTexture      = texturesManager->getTrexTexture();
-    auto obstaclesTexture = texturesManager->getObstaclesTexture();
     
-    auto dinosaur         = trex::Dinosaur(trexTexture);
-    auto obstaclesManager = trex::ObstacleManager(obstaclesTexture);
-    auto clock            = sf::Clock();
+    auto dinosaur = trex::Dinosaur(spriteManager, animationsManager);
+    auto obstaclesManager = trex::ObstacleManager(spriteManager, animationsManager);
+    auto clock = sf::Clock();
 
     while (window.isOpen())
     {
@@ -39,6 +38,7 @@ int main()
         }
 
         auto elapsedTime = clock.getElapsedTime().asMilliseconds();
+        animationsManager.update(elapsedTime);
         dinosaur.update(elapsedTime);
         obstaclesManager.updateObstacles(elapsedTime);
 
