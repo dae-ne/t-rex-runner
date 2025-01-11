@@ -1,22 +1,23 @@
 #pragma once
 
-namespace trex
+namespace trex {
+
+class AnimationsManager
 {
-    class AnimationsManager
-    {
-    public:
-        AnimationsManager(int frames, int frameTime)
-            : frames(frames), frameTime(frameTime) {}
+public:
+    AnimationsManager(int frames, int frameTime)
+        : frames(frames), frameTime(frameTime) {}
 
-        void update(int elapsedTime);
-        int getCurrentFrame() const { return currentFrame; }
-        int getFramesNumber() const { return frames; }
+    void update(int elapsedTime);
+    int getCurrentFrame() const { return currentFrame; }
+    int getFramesNumber() const { return frames; }
 
-    private:
-        int frames;
-        int frameTime;
+private:
+    int frames;
+    int frameTime;
 
-        int currentFrame = 0;
-        int elapsedTime = 0;
-    };
+    int currentFrame = 0;
+    int elapsedTime = 0;
+};
+
 }

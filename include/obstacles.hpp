@@ -6,73 +6,74 @@
 #include "animations.hpp"
 #include "sprites.hpp"
 
-namespace trex
+namespace trex {
+
+class Obstacle : public sf::Drawable
 {
-    class Obstacle : public sf::Drawable
+public:
+    Obstacle(SpriteManager& spriteManager) : spriteManager(spriteManager) {}
+
+    void update(int elapsedTime);
+    float getPositionX() const { return position.x; }
+
+protected:
+    sf::Vector2f position = { 600.f, 180.f };
+
+    SpriteManager& spriteManager;
+
+    virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
+};
+
+class ObstacleSmallCactus : public Obstacle
+{
+public:
+    ObstacleSmallCactus(SpriteManager& spriteManager) : Obstacle(spriteManager) {}
+
+private:
+    void draw(sf::RenderTarget&, sf::RenderStates) const override;
+};
+
+class ObstacleLargeCactus : public Obstacle
+{
+public:
+    ObstacleLargeCactus(SpriteManager& spriteManager) : Obstacle(spriteManager)
     {
-    public:
-        Obstacle(SpriteManager& spriteManager) : spriteManager(spriteManager) {}
+        position.y += 2.f;
+    }
 
-        void update(int elapsedTime);
-        float getPositionX() const { return position.x; }
+private:
+    void draw(sf::RenderTarget&, sf::RenderStates) const override;
+};
 
-    protected:
-        sf::Vector2f position = { 600.f, 180.f };
+class ObstacleBird : public Obstacle
+{
+public:
+    ObstacleBird(SpriteManager& spriteManager, AnimationsManager& animationsManager)
+        : Obstacle(spriteManager), animationsManager(animationsManager) {}
 
-        SpriteManager& spriteManager;
+private:
+    AnimationsManager& animationsManager;
 
-        virtual void draw(sf::RenderTarget&, sf::RenderStates) const = 0;
-    };
+    void draw(sf::RenderTarget&, sf::RenderStates) const override;
+};
 
-    class ObstacleSmallCactus : public Obstacle
-    {
-    public:
-        ObstacleSmallCactus(SpriteManager& spriteManager) : Obstacle(spriteManager) {}
-    
-    private:
-        void draw(sf::RenderTarget&, sf::RenderStates) const override;
-    };
+class ObstacleManager
+{
+public:
+    ObstacleManager(SpriteManager& spriteManager, AnimationsManager& animationsManager)
+        : spriteManager(spriteManager), animationsManager(animationsManager) {}
 
-    class ObstacleLargeCactus : public Obstacle
-    {
-    public:
-        ObstacleLargeCactus(SpriteManager& spriteManager) : Obstacle(spriteManager)
-        {
-            position.y += 2.f;
-        }
-    
-    private:
-        void draw(sf::RenderTarget&, sf::RenderStates) const override;
-    };
+    void generateRandomObstacle();
+    void popObstacle();
 
-    class ObstacleBird : public Obstacle
-    {
-    public:
-        ObstacleBird(SpriteManager& spriteManager, AnimationsManager& animationsManager)
-            : Obstacle(spriteManager), animationsManager(animationsManager) {}
-    
-    private:
-        AnimationsManager& animationsManager;
+    void updateObstacles(int elapsedTime);
+    void drawObstacles(sf::RenderTarget&);
 
-        void draw(sf::RenderTarget&, sf::RenderStates) const override;
-    };
+private:
+    SpriteManager& spriteManager;
+    AnimationsManager& animationsManager;
 
-    class ObstacleManager
-    {
-    public:
-        ObstacleManager(SpriteManager& spriteManager, AnimationsManager& animationsManager)
-            : spriteManager(spriteManager), animationsManager(animationsManager) {}
+    std::queue<Obstacle*> obstacles;
+};
 
-        void generateRandomObstacle();
-        void popObstacle();
-
-        void updateObstacles(int elapsedTime);
-        void drawObstacles(sf::RenderTarget&);
-
-    private:
-        SpriteManager& spriteManager;
-        AnimationsManager& animationsManager;
-
-        std::queue<Obstacle*> obstacles;
-    };
 }

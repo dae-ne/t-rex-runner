@@ -7,28 +7,29 @@
 
 #define TREX_MIN_Y_POSITION 180.f
 
-namespace trex
+namespace trex {
+
+class Dinosaur : public sf::Drawable
 {
-    class Dinosaur : public sf::Drawable
-    {
-        enum class State { Running, Jumping };
+    enum class State { Running, Jumping };
 
-    public:
-        Dinosaur(SpriteManager&, AnimationsManager&);
+public:
+    Dinosaur(SpriteManager&, AnimationsManager&);
 
-        void jump();
-        void update(int elapsedTime);
+    void jump();
+    void update(int elapsedTime);
 
-    private:
-        State state = State::Running;
+private:
+    State state = State::Running;
 
-        SpriteManager& spriteManager;
-        AnimationsManager& animationsManager;
+    SpriteManager& spriteManager;
+    AnimationsManager& animationsManager;
 
-        sf::Vector2f position = { 40.f, TREX_MIN_Y_POSITION };
-        float currentJumpHight = 0.f;
-        float currentJumpSpeed = 0.f;
+    sf::Vector2f position = { 40.f, TREX_MIN_Y_POSITION };
+    float currentJumpHight = 0.f;
+    float currentJumpSpeed = 0.f;
 
-        void draw(sf::RenderTarget&, sf::RenderStates) const;
-    };
+    void draw(sf::RenderTarget&, sf::RenderStates) const;
+};
+
 }
