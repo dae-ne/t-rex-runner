@@ -38,7 +38,7 @@ class ObstacleLargeCactus : public Obstacle
 public:
     ObstacleLargeCactus(SpriteManager& spriteManager) : Obstacle(spriteManager)
     {
-        position.y += 2.f;
+        position.y += 2.f; // adding 2 pixels offset to level the cactus with the ground
     }
 
 private:
@@ -70,6 +70,8 @@ public:
     void drawObstacles(sf::RenderTarget&);
 
 private:
+    int timeElapsedSinceLastObstacle = -4000;
+
     SpriteManager& spriteManager;
     AnimationsManager& animationsManager;
 

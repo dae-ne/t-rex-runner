@@ -2,7 +2,7 @@
 
 void trex::Obstacle::update(int elapsedTime)
 {
-    position.x -= 2.0f;
+    position.x -= 4.0f;
 }
 
 void trex::ObstacleSmallCactus::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -53,16 +53,14 @@ void trex::ObstacleManager::popObstacle()
 
 void trex::ObstacleManager::updateObstacles(int elapsedTime)
 {
-    if (obstacles.empty())
+    if (elapsedTime - timeElapsedSinceLastObstacle > 5000)
     {
         generateRandomObstacle();
-        return;
+        timeElapsedSinceLastObstacle = elapsedTime;
     }
 
-    if (elapsedTime % 1000 < 10)
-    {
-        generateRandomObstacle();
-    }
+    if (obstacles.empty())
+        return;
 
     for (size_t i = 0; i < obstacles.size(); i++)
     {
@@ -72,7 +70,7 @@ void trex::ObstacleManager::updateObstacles(int elapsedTime)
         obstacles.push(obstacle);
     }
 
-    if (obstacles.front()->getPositionX() < 50.f)
+    if (obstacles.front()->getPositionX() < -200.f)
     {
         popObstacle();
     }
