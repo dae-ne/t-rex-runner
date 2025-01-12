@@ -23,6 +23,7 @@ int main()
     auto dinosaur = trex::Dinosaur(spriteManager, animationsManager);
     auto obstaclesManager = trex::ObstacleManager(spriteManager, animationsManager);
     auto clock = sf::Clock();
+    auto isRunning = true;
 
     while (window.isOpen())
     {
@@ -37,14 +38,23 @@ int main()
             dinosaur.jump();
         }
 
+        if (!isRunning)
+        {
+            clock.restart();
+            continue;
+        }
+
         auto elapsedTime = clock.getElapsedTime().asMilliseconds();
+
         animationsManager.update(elapsedTime);
         dinosaur.update(elapsedTime);
         obstaclesManager.updateObstacles(elapsedTime);
 
+        isRunning = !obstaclesManager.isColliding(dinosaur.getBoundingBox());
+
         window.clear(sf::Color::Red);
-        window.draw(dinosaur);
         obstaclesManager.drawObstacles(window);
+        window.draw(dinosaur);
         window.display();
     }
 }

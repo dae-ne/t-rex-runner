@@ -27,6 +27,26 @@ void trex::ObstacleBird::draw(sf::RenderTarget& target, sf::RenderStates states)
     target.draw(spriteManager.getSprite());
 }
 
+trex::ObstacleManager::ObstacleManager(SpriteManager& spriteManager, AnimationsManager& animationsManager)
+    : spriteManager(spriteManager), animationsManager(animationsManager)
+{
+    auto sprite = spriteManager.getSprite();
+    auto globalBounds = sf::FloatRect();
+    auto vectorZero = sf::Vector2f();
+
+    spriteManager.setSprite(SpriteManager::SpriteType::SmallCactus, vectorZero);
+    globalBounds = sprite.getGlobalBounds();
+    smallCactusSize = globalBounds.getSize();
+
+    spriteManager.setSprite(SpriteManager::SpriteType::LargeCactus, vectorZero);
+    globalBounds = sprite.getGlobalBounds();
+    largeCactusSize = globalBounds.getSize();
+
+    spriteManager.setSprite(SpriteManager::SpriteType::BirdAnimation1, vectorZero);
+    globalBounds = sprite.getGlobalBounds();
+    birdSize = globalBounds.getSize();
+}
+
 void trex::ObstacleManager::generateRandomObstacle()
 {
     int selection = rand() % 3;
@@ -70,7 +90,7 @@ void trex::ObstacleManager::updateObstacles(int elapsedTime)
         obstacles.push(obstacle);
     }
 
-    if (obstacles.front()->getPositionX() < -200.f)
+    if (obstacles.front()->getPosition().x < -200.f)
     {
         popObstacle();
     }
@@ -85,4 +105,26 @@ void trex::ObstacleManager::drawObstacles(sf::RenderTarget& target)
         target.draw(*obstacle);
         obstacles.push(obstacle);
     }
+}
+
+bool trex::ObstacleManager::isColliding(sf::FloatRect boundingBox)
+{
+    if (obstacles.empty())
+        return false;
+
+    auto obstacle = obstacles.front();
+    auto position = obstacle->getPosition();
+    auto size = sf::Vector2f();
+
+    if (typeid(*obstacle) == typeid(ObstacleBird))
+        size = birdSize;
+    else if (typeid(*obstacle) == typeid(ObstacleSmallCactus))
+        size = smallCactusSize;
+    else if (typeid(*obstacle) == typeid(ObstacleLargeCactus))
+        size = largeCactusSize;
+    else
+        return false;
+
+    auto obstacleBoundingBox = sf::FloatRect(position, size);
+    return obstacleBoundingBox.intersects(boundingBox);
 }

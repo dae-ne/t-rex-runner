@@ -4,6 +4,8 @@ trex::Dinosaur::Dinosaur(SpriteManager& spriteManager, AnimationsManager& animat
     : spriteManager(spriteManager), animationsManager(animationsManager)
 {
     spriteManager.setSprite(SpriteManager::SpriteType::DinosaurStanding, position);
+    auto globalBounds = spriteManager.getSprite().getGlobalBounds();
+    size = { globalBounds.width, globalBounds.height };
 }
 
 void trex::Dinosaur::jump()
@@ -31,6 +33,11 @@ void trex::Dinosaur::update(int elapsedTime)
     currentJumpSpeed = 0.f;
     currentJumpHight = 0.f;
     position.y = TREX_MIN_Y_POSITION;
+}
+
+sf::FloatRect trex::Dinosaur::getBoundingBox() const
+{
+    return { position, size };
 }
 
 void trex::Dinosaur::draw(sf::RenderTarget& target, sf::RenderStates) const
