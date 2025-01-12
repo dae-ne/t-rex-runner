@@ -3,6 +3,7 @@
 
 #include "animations.hpp"
 #include "dinosaur.hpp"
+#include "hud.hpp"
 #include "obstacles.hpp"
 #include "sprites.hpp"
 
@@ -12,14 +13,21 @@ int main()
     window.setFramerateLimit(60);
 
     auto spriteManager = trex::SpriteManager();
-    auto animationsManager = trex::AnimationsManager(8, 100);
+    auto hud = trex::Hud();
 
     if (!spriteManager.loadTextureFromFile())
     {
         std::cerr << "Failed to load texture\n";
         exit(1);
     }
+
+    if (!hud.loadFontFromFile())
+    {
+        std::cerr << "Failed to load font\n";
+        exit(1);
+    }
     
+    auto animationsManager = trex::AnimationsManager(8, 100);
     auto dinosaur = trex::Dinosaur(spriteManager, animationsManager);
     auto obstaclesManager = trex::ObstacleManager(spriteManager, animationsManager);
     auto clock = sf::Clock();
@@ -49,12 +57,14 @@ int main()
         animationsManager.update(elapsedTime);
         dinosaur.update(elapsedTime);
         obstaclesManager.updateObstacles(elapsedTime);
+        hud.update(elapsedTime);
 
         isRunning = !obstaclesManager.isColliding(dinosaur.getBoundingBox());
 
         window.clear(sf::Color::Red);
         obstaclesManager.drawObstacles(window);
         window.draw(dinosaur);
+        window.draw(hud);
         window.display();
     }
 }
