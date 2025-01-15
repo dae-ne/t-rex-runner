@@ -1,19 +1,21 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "animations.hpp"
 #include "dinosaur.hpp"
 #include "hud.hpp"
 #include "obstacles.hpp"
 #include "sprites.hpp"
+#include "state.hpp"
 
 int main()
 {
-    auto window = sf::RenderWindow({ 600u, 200u }, "T-Rex Runner", sf::Style::Titlebar | sf::Style::Close);
+    auto window = sf::RenderWindow({ 600u, 200u }, "T-Rex Runner",
+        sf::Style::Titlebar | sf::Style::Close);
+        
     window.setFramerateLimit(60);
 
     auto spriteManager = trex::SpriteManager();
-    auto hud = trex::Hud();
+    auto hud = trex::HUD();
 
     if (!spriteManager.loadTextureFromFile())
     {
@@ -27,18 +29,26 @@ int main()
         exit(1);
     }
     
-    auto animationsManager = trex::AnimationsManager(8, 100);
-    auto dinosaur = trex::Dinosaur(spriteManager, animationsManager);
-    auto obstaclesManager = trex::ObstacleManager(spriteManager, animationsManager);
-    auto clock = sf::Clock();
-    auto isRunning = true;
+    auto dinosaur = trex::Dinosaur(spriteManager);
+    auto obstaclesManager = trex::ObstacleManager(spriteManager);
+
+    auto gameState = trex::GameState();
 
     while (window.isOpen())
     {
         for (auto event = sf::Event(); window.pollEvent(event);)
         {
             if (event.type == sf::Event::Closed)
+            {
                 window.close();
+            }
+
+            if (event.type == sf::Event::KeyPressed &&
+                event.key.code == sf::Keyboard::Space &&
+                gameState.getState() == trex::GameState::State::Start)
+            {
+                gameState.setState(trex::GameState::State::Running);
+            }
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -46,20 +56,13 @@ int main()
             dinosaur.jump();
         }
 
-        if (!isRunning)
-        {
-            clock.restart();
-            continue;
-        }
+        gameState.update();
+        dinosaur.update(gameState);
+        obstaclesManager.updateObstacles(gameState);
+        hud.update(gameState);
 
-        auto elapsedTime = clock.getElapsedTime().asMilliseconds();
-
-        animationsManager.update(elapsedTime);
-        dinosaur.update(elapsedTime);
-        obstaclesManager.updateObstacles(elapsedTime);
-        hud.update(elapsedTime);
-
-        isRunning = !obstaclesManager.isColliding(dinosaur.getBoundingBox());
+        if (obstaclesManager.isColliding(dinosaur.getBoundingBox()))
+            gameState.setState(trex::GameState::State::Dead);
 
         window.clear(sf::Color::Red);
         obstaclesManager.drawObstacles(window);

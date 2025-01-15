@@ -2,7 +2,7 @@
 
 #include "hud.hpp"
 
-std::string getScoreString(int score, int highestScore)
+std::string getFullScoreString(int score, int highestScore)
 {
     auto scoreString = std::to_string(score);
     auto highestScoreString = std::to_string(highestScore);
@@ -16,18 +16,18 @@ std::string getScoreString(int score, int highestScore)
     return "HI " + highestScorePadding + highestScoreString + " " + scorePadding + scoreString;
 }
 
-void trex::Score::update(int elapsedTime)
+void trex::ScoreDisplay::update(GameState& gameState)
 {
-    score = elapsedTime / 100;
-    text.setString(getScoreString(score, highestScore));
+    auto scoreString = getFullScoreString(gameState.getScore(), gameState.getHighestScore());   
+    text.setString(scoreString);
 }
 
-void trex::Score::setFont(sf::Font& font)
+void trex::ScoreDisplay::setFont(sf::Font& font)
 {
     text.setFont(font);
     text.setFillColor(sf::Color::Black);
     text.setCharacterSize(14);
-    text.setString(getScoreString(score, highestScore));
+    text.setString(getFullScoreString(score, highestScore));
 
     auto globalBounds = text.getGlobalBounds();
 
@@ -35,24 +35,24 @@ void trex::Score::setFont(sf::Font& font)
     text.setPosition(590.f, 10.f);
 }
 
-void trex::Score::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void trex::ScoreDisplay::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(text);
 }
 
-void trex::Hud::update(int elapsedTime)
+void trex::HUD::update(GameState& gameState)
 {
-    score.update(elapsedTime);
+    score.update(gameState);
 }
 
-bool trex::Hud::loadFontFromFile()
+bool trex::HUD::loadFontFromFile()
 {
     auto result = font.loadFromFile(FONT_PATH);
     score.setFont(font);
     return result;
 }
 
-void trex::Hud::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void trex::HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(score);
 }

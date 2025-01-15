@@ -1,11 +1,9 @@
 #include "dinosaur.hpp"
 
-trex::Dinosaur::Dinosaur(SpriteManager& spriteManager, AnimationsManager& animationsManager)
-    : spriteManager(spriteManager), animationsManager(animationsManager)
+trex::Dinosaur::Dinosaur(SpriteManager& spriteManager)
+    : spriteManager(spriteManager)
 {
-    spriteManager.setSprite(SpriteManager::SpriteType::DinosaurStanding, position);
-    auto globalBounds = spriteManager.getSprite().getGlobalBounds();
-    size = { globalBounds.width, globalBounds.height };
+    size = spriteManager.getSize(SpriteType::DinosaurStanding);
 }
 
 void trex::Dinosaur::jump()
@@ -14,25 +12,40 @@ void trex::Dinosaur::jump()
         return;
 
     currentJumpSpeed = 10.f;
-    state = State::Jumping;
 }
 
-void trex::Dinosaur::update(int elapsedTime)
+void trex::Dinosaur::update(GameState& gameState)
 {
+    auto state = gameState.getState();
+
+    if (state == GameState::State::Start)
+    {
+        resetPosition();
+        currentSprite = SpriteType::DinosaurStanding;
+        return;
+    }
+
+    if (state == GameState::State::Dead)
+    {
+        currentSprite = SpriteType::DinosaurStanding;
+        return;
+    }
+
     currentJumpHight += currentJumpSpeed;
     position.y = TREX_MIN_Y_POSITION - currentJumpHight;
 
     if (currentJumpHight > 0.f)
     {
-        state = State::Jumping;
         currentJumpSpeed -= 0.4f;
+        currentSprite = SpriteType::DinosaurStanding;
         return;
     }
 
-    state = State::Running;
-    currentJumpSpeed = 0.f;
-    currentJumpHight = 0.f;
-    position.y = TREX_MIN_Y_POSITION;
+    resetPosition();
+
+    currentSprite = gameState.getCurrentFrameNumber() % 2 == 0
+        ? SpriteType::DinosaurRunningAnimation1
+        : SpriteType::DinosaurRunningAnimation2;
 }
 
 sf::FloatRect trex::Dinosaur::getBoundingBox() const
@@ -42,20 +55,13 @@ sf::FloatRect trex::Dinosaur::getBoundingBox() const
 
 void trex::Dinosaur::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
-    auto spriteType = SpriteManager::SpriteType::DinosaurStanding;
-
-    switch (state)
-    {
-    case State::Running:
-        spriteType = animationsManager.getCurrentFrame() % 2 == 0
-            ? SpriteManager::SpriteType::DinosaurRunningAnimation1
-            : SpriteManager::SpriteType::DinosaurRunningAnimation2;
-        break;
-    default:
-        spriteType = SpriteManager::SpriteType::DinosaurStanding;
-        break;
-    }
-
-    spriteManager.setSprite(spriteType, position);
+    spriteManager.setSprite(currentSprite, position);
     target.draw(spriteManager.getSprite());
+}
+
+void trex::Dinosaur::resetPosition()
+{
+    currentJumpSpeed = 0.f;
+    currentJumpHight = 0.f;
+    position.y = TREX_MIN_Y_POSITION;
 }

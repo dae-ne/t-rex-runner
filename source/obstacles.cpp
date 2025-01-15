@@ -1,50 +1,53 @@
 #include "obstacles.hpp"
 
-void trex::Obstacle::update(int elapsedTime)
+void trex::Obstacle::update(GameState& gameState)
 {
-    position.x -= 4.0f;
+    if (gameState.getState() != GameState::State::Running)
+        return;
+
+    position.x -= 8.0f;
 }
 
-void trex::ObstacleSmallCactus::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void trex::Obstacle::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    spriteManager.setSprite(SpriteManager::SpriteType::SmallCactus, position);
+    spriteManager.setSprite(currentSprite, position);
     target.draw(spriteManager.getSprite());
 }
 
-void trex::ObstacleLargeCactus::draw(sf::RenderTarget& target, sf::RenderStates states) const
+trex::ObstacleSmallCactus::ObstacleSmallCactus(SpriteManager& spriteManager)
+    : Obstacle(spriteManager)
 {
-    spriteManager.setSprite(SpriteManager::SpriteType::LargeCactus, position);
-    target.draw(spriteManager.getSprite());
+    currentSprite = SpriteType::SmallCactus;
 }
 
-void trex::ObstacleBird::draw(sf::RenderTarget& target, sf::RenderStates states) const
+trex::ObstacleLargeCactus::ObstacleLargeCactus(SpriteManager& spriteManager)
+    : Obstacle(spriteManager)
 {
-    auto spriteType = animationsManager.getCurrentFrame() > animationsManager.getFramesNumber() / 2
-        ? SpriteManager::SpriteType::BirdAnimation1
-        : SpriteManager::SpriteType::BirdAnimation2;
-    
-    spriteManager.setSprite(spriteType, position);
-    target.draw(spriteManager.getSprite());
+    currentSprite = SpriteType::LargeCactus;
+    position.y += 2.f; // adding 2 pixels offset to level the cactus with the ground
 }
 
-trex::ObstacleManager::ObstacleManager(SpriteManager& spriteManager, AnimationsManager& animationsManager)
-    : spriteManager(spriteManager), animationsManager(animationsManager)
+trex::ObstacleBird::ObstacleBird(SpriteManager& spriteManager)
+    : Obstacle(spriteManager)
 {
-    auto sprite = spriteManager.getSprite();
-    auto globalBounds = sf::FloatRect();
-    auto vectorZero = sf::Vector2f();
+    currentSprite = SpriteType::BirdAnimation1;
+}
 
-    spriteManager.setSprite(SpriteManager::SpriteType::SmallCactus, vectorZero);
-    globalBounds = sprite.getGlobalBounds();
-    smallCactusSize = globalBounds.getSize();
+void trex::ObstacleBird::update(GameState& gameState)
+{
+    Obstacle::update(gameState);
 
-    spriteManager.setSprite(SpriteManager::SpriteType::LargeCactus, vectorZero);
-    globalBounds = sprite.getGlobalBounds();
-    largeCactusSize = globalBounds.getSize();
+    currentSprite = gameState.getCurrentFrameNumber() > gameState.getTotalNumberOfFrames() / 2
+        ? SpriteType::BirdAnimation1
+        : SpriteType::BirdAnimation2;
+}
 
-    spriteManager.setSprite(SpriteManager::SpriteType::BirdAnimation1, vectorZero);
-    globalBounds = sprite.getGlobalBounds();
-    birdSize = globalBounds.getSize();
+trex::ObstacleManager::ObstacleManager(SpriteManager& spriteManager)
+    : spriteManager(spriteManager)
+{
+    smallCactusSize = spriteManager.getSize(SpriteType::SmallCactus);
+    largeCactusSize = spriteManager.getSize(SpriteType::LargeCactus);
+    birdSize = spriteManager.getSize(SpriteType::BirdAnimation1);
 }
 
 void trex::ObstacleManager::generateRandomObstacle()
@@ -60,7 +63,7 @@ void trex::ObstacleManager::generateRandomObstacle()
         obstacles.push(new ObstacleLargeCactus(spriteManager));
         break;
     case 2:
-        obstacles.push(new ObstacleBird(spriteManager, animationsManager));
+        obstacles.push(new ObstacleBird(spriteManager));
         break;
     }
 }
@@ -71,12 +74,14 @@ void trex::ObstacleManager::popObstacle()
     obstacles.pop();
 }
 
-void trex::ObstacleManager::updateObstacles(int elapsedTime)
+void trex::ObstacleManager::updateObstacles(GameState& gameState)
 {
-    if (elapsedTime - timeElapsedSinceLastObstacle > 5000)
+    auto elapsedTime = gameState.getInGameTimeMs();
+
+    if (elapsedTime - timeElapsedSinceLastObstacleMs > 5000)
     {
         generateRandomObstacle();
-        timeElapsedSinceLastObstacle = elapsedTime;
+        timeElapsedSinceLastObstacleMs = elapsedTime;
     }
 
     if (obstacles.empty())
@@ -86,7 +91,7 @@ void trex::ObstacleManager::updateObstacles(int elapsedTime)
     {
         auto obstacle = obstacles.front();
         obstacles.pop();
-        obstacle->update(elapsedTime);
+        obstacle->update(gameState);
         obstacles.push(obstacle);
     }
 

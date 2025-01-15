@@ -2,14 +2,16 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "state.hpp"
+
 #define FONT_PATH "assets/font.ttf"
 
 namespace trex {
 
-class Score : public sf::Drawable
+class ScoreDisplay : public sf::Drawable
 {
 public:
-    void update(int elapsedTime);
+    void update(GameState&);
 
     int getScore() const { return score; }
     int getHighestScore() const { return highestScore; }
@@ -26,17 +28,17 @@ private:
     void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
 
-class Hud : public sf::Drawable
+class HUD : public sf::Drawable
 {
 public:
-    void update(int elapsedTime);
+    void update(GameState&);
     bool loadFontFromFile();
 
     void setHighestScore(int score) { this->score.setHighestScore(score); }
 
 private:
     sf::Font font;
-    Score score;
+    ScoreDisplay score;
 
     void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };

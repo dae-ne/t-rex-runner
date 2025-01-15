@@ -39,3 +39,10 @@ void trex::SpriteManager::setSprite(SpriteType spriteType, sf::Vector2f position
     sprite.setOrigin({ 0.f, sprite.getGlobalBounds().height });
     sprite.setPosition(position);
 }
+
+sf::Vector2f trex::SpriteManager::getSize(SpriteType spriteType)
+{
+    setSprite(spriteType, { 0.f, 0.f });
+    auto globalBounds = sprite.getGlobalBounds();
+    return { globalBounds.width, globalBounds.height };
+}
