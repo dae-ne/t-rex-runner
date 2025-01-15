@@ -1,4 +1,4 @@
-#include "State.hpp"
+#include "state.hpp"
 
 void trex::Score::update(int timeMs)
 {
