@@ -41,6 +41,10 @@ private:
     void update();
     void draw();
 
+    const unsigned int WindowWidth = 600u;
+    const unsigned int WindowHeight = 200u;
+    const std::string WindowName = "T-Rex Runner";
+
     sf::RenderWindow* pWindow;
 
     GameState gameState = GameState();

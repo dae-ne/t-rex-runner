@@ -74,8 +74,21 @@ void trex::ObstacleManager::popObstacle()
     obstacles.pop();
 }
 
+void trex::ObstacleManager::removeAllObstacles()
+{
+    for (size_t i = 0; i < obstacles.size(); i++)
+        popObstacle();
+}
+
 void trex::ObstacleManager::updateObstacles(GameState& gameState)
 {
+    if (gameState.getState() == GameState::State::Start)
+    {
+        removeAllObstacles();
+        timeElapsedSinceLastObstacleMs = 0;
+        return;
+    }
+
     auto elapsedTime = gameState.getInGameTimeMs();
 
     if (elapsedTime - timeElapsedSinceLastObstacleMs > 5000)

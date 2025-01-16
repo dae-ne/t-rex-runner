@@ -2,7 +2,7 @@
 
 trex::Game::Game()
 {
-    pWindow = new sf::RenderWindow({ 600u, 200u }, "T-Rex Runner",
+    pWindow = new sf::RenderWindow({ WindowWidth, WindowHeight }, WindowName,
         sf::Style::Titlebar | sf::Style::Close);
     
     pWindow->setFramerateLimit(60);
@@ -50,10 +50,19 @@ void trex::Game::handleEvents()
         }
 
         if (event.type == sf::Event::KeyPressed &&
-            event.key.code == sf::Keyboard::Space &&
-            gameState.getState() == trex::GameState::State::Start)
+            event.key.code == sf::Keyboard::Space)
         {
-            gameState.setState(trex::GameState::State::Running);
+            switch (gameState.getState())
+            {
+            case GameState::State::Start:
+                gameState.setState(GameState::State::Running);
+                break;
+            case GameState::State::Dead:
+                gameState.setState(GameState::State::Start);
+                break;
+            default:
+                break;
+            }
         }
     }
 }
@@ -74,7 +83,10 @@ void trex::Game::update()
     hud.update(gameState);
 
     if (obstacleManager.isColliding(dinosaur.getBoundingBox()))
-        gameState.setState(trex::GameState::State::Dead);
+        gameState.setState(GameState::State::Dead);
+
+    if (gameState.getState() == GameState::State::Start && gameState.getHighestScore() > 0)
+        gameState.setState(GameState::State::Running);
 }
 
 void trex::Game::draw()

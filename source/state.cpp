@@ -39,10 +39,11 @@ void trex::GameState::setState(State state)
     if (this->state == state)
         return;
 
-    if (state == State::Start)
+    if (state == State::Start || state == State::Running)
     {
         score.reset();
         frameIndexCalculator.reset();
+        clock.restart();
     }
 
     this->state = state;

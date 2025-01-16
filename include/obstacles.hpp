@@ -52,6 +52,7 @@ public:
 
     void generateRandomObstacle();
     void popObstacle();
+    void removeAllObstacles();
 
     void updateObstacles(GameState&);
     void drawObstacles(sf::RenderTarget&);
