@@ -17,11 +17,12 @@ int main()
     };
 
     auto game = trex::Game(config);
-    auto loadingFilesResult = game.loadFiles();
+    auto [success, errorMessage] = game.loadFiles();
 
-    if (!loadingFilesResult.success)
+    if (!success)
     {
-        std::cerr << loadingFilesResult.errorMessage << std::endl;
+        std::cerr << errorMessage << std::endl;
+        return 1;
     }
 
     game.mainloop();

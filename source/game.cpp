@@ -18,12 +18,12 @@ trex::Game::~Game()
 trex::LoadingFilesResult trex::Game::loadFiles()
 {
     if (!spriteManager.loadTextureFromFile())
-        return LoadingFilesResult("Failed to load texture!");
+        return { "Failed to load texture!" };
 
     if (!loadFontFromFile())
-        return LoadingFilesResult("Failed to load font!");
+        return { "Failed to load font!" };
 
-    return LoadingFilesResult();
+    return {};
 }
 
 void trex::Game::mainloop()
@@ -40,14 +40,15 @@ void trex::Game::mainloop()
 
 void trex::Game::handleEvents()
 {
+    auto state = gameState.getState();
+
     for (auto event = sf::Event(); pWindow->pollEvent(event);)
     {
         if (event.type == sf::Event::Closed)
         {
             pWindow->close();
+            return;
         }
-
-        auto state = gameState.getState();
 
         if (event.type == sf::Event::KeyPressed &&
             event.key.code == sf::Keyboard::Space &&
@@ -65,17 +66,17 @@ void trex::Game::handleEvents()
                 break;
             }
         }
+    }
 
-        if (state == GameState::State::Running)
-        {
-            isReloadBlocked = true;
-            return;
-        }
+    if (state == GameState::State::Running)
+    {
+        isReloadBlocked = true;
+        return;
+    }
 
-        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-        {
-            isReloadBlocked = false;
-        }
+    if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+        isReloadBlocked = false;
     }
 }
 
