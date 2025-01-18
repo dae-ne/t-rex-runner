@@ -13,6 +13,7 @@ int main()
         600u,           // width
         200u,           // height
         10u,            // padding
+        8u,             // bits per pixel
         
     };
 

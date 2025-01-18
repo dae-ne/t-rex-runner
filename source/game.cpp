@@ -2,17 +2,16 @@
 
 trex::Game::Game(Config& config) : config(config)
 {
-    sf::VideoMode mode = { config.windowWidth, config.windowHeight };
+    sf::VideoMode mode = {
+        config.windowWidth,
+        config.windowHeight,
+        config.bitsPerPixel
+    };
 
-    pWindow = new sf::RenderWindow(mode, config.windowTitle,
-        sf::Style::Titlebar | sf::Style::Close);
-    
-    pWindow->setFramerateLimit(60);
-}
+    auto style = sf::Style::Titlebar | sf::Style::Close;
 
-trex::Game::~Game()
-{
-    delete pWindow;
+    window.create(mode, config.windowTitle, style);
+    window.setFramerateLimit(60);
 }
 
 trex::LoadingFilesResult trex::Game::loadFiles()
@@ -28,7 +27,7 @@ trex::LoadingFilesResult trex::Game::loadFiles()
 
 void trex::Game::mainloop()
 {
-    while (pWindow->isOpen())
+    while (window.isOpen())
     {
         handleEvents();
 
@@ -42,11 +41,11 @@ void trex::Game::handleEvents()
 {
     auto state = gameState.getState();
 
-    for (auto event = sf::Event(); pWindow->pollEvent(event);)
+    for (auto event = sf::Event(); window.pollEvent(event);)
     {
         if (event.type == sf::Event::Closed)
         {
-            pWindow->close();
+            window.close();
             return;
         }
 
@@ -104,14 +103,14 @@ void trex::Game::update()
 
 void trex::Game::draw()
 {
-    pWindow->clear(sf::Color::Red);
+    window.clear(sf::Color::Red);
 
-    obstacleManager.drawObstacles(*pWindow);
-    pWindow->draw(dinosaur);
-    pWindow->draw(hud);
-    pWindow->draw(gui);
+    obstacleManager.drawObstacles(window);
+    window.draw(dinosaur);
+    window.draw(hud);
+    window.draw(gui);
 
-    pWindow->display();
+    window.display();
 }
 
 bool trex::Game::loadFontFromFile()

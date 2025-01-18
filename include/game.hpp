@@ -31,7 +31,6 @@ class Game
 {
 public:
     Game(Config&);
-    ~Game();
 
     LoadingFilesResult loadFiles();
     void mainloop();
@@ -45,7 +44,7 @@ private:
 
     bool loadFontFromFile();
 
-    sf::RenderWindow* pWindow;
+    sf::RenderWindow window;
     sf::Font font;
 
     Config& config;
