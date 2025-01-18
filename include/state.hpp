@@ -67,7 +67,7 @@ public:
 private:
     sf::Clock clock;
     State state = State::Start;
-    Score score = Score();
+    Score score;
     FrameIndexCalculator frameIndexCalculator = FrameIndexCalculator(8, 100);
 };
 

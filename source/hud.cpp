@@ -40,16 +40,9 @@ void trex::ScoreDisplay::draw(sf::RenderTarget& target, sf::RenderStates states)
     target.draw(text);
 }
 
-void trex::HUD::update(GameState& gameState)
+void trex::HUD::update(GameState &gameState)
 {
     score.update(gameState);
-}
-
-bool trex::HUD::loadFontFromFile()
-{
-    auto result = font.loadFromFile(FONT_PATH);
-    score.setFont(font);
-    return result;
 }
 
 void trex::HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const

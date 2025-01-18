@@ -16,14 +16,10 @@ trex::Game::~Game()
 trex::LoadingFilesResult trex::Game::loadFiles()
 {
     if (!spriteManager.loadTextureFromFile())
-    {
         return LoadingFilesResult("Failed to load texture!");
-    }
 
-    if (!hud.loadFontFromFile())
-    {
+    if (!loadFontFromFile())
         return LoadingFilesResult("Failed to load font!");
-    }
 
     return LoadingFilesResult();
 }
@@ -49,10 +45,13 @@ void trex::Game::handleEvents()
             pWindow->close();
         }
 
+        auto state = gameState.getState();
+
         if (event.type == sf::Event::KeyPressed &&
-            event.key.code == sf::Keyboard::Space)
+            event.key.code == sf::Keyboard::Space &&
+            !isReloadBlocked)
         {
-            switch (gameState.getState())
+            switch (state)
             {
             case GameState::State::Start:
                 gameState.setState(GameState::State::Running);
@@ -63,6 +62,17 @@ void trex::Game::handleEvents()
             default:
                 break;
             }
+        }
+
+        if (state == GameState::State::Running)
+        {
+            isReloadBlocked = true;
+            return;
+        }
+
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            isReloadBlocked = false;
         }
     }
 }
@@ -96,4 +106,11 @@ void trex::Game::draw()
     pWindow->draw(dinosaur);
     pWindow->draw(hud);
     pWindow->display();
+}
+
+bool trex::Game::loadFontFromFile()
+{
+    auto result = font.loadFromFile(FONT_PATH);
+    hud.setFont(font);
+    return result;
 }

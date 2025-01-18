@@ -32,12 +32,11 @@ class HUD : public sf::Drawable
 {
 public:
     void update(GameState&);
-    bool loadFontFromFile();
 
     void setHighestScore(int score) { this->score.setHighestScore(score); }
+    void setFont(sf::Font& font) { score.setFont(font); }
 
 private:
-    sf::Font font;
     ScoreDisplay score;
 
     void draw(sf::RenderTarget&, sf::RenderStates) const override;

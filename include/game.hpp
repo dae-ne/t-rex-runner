@@ -41,18 +41,23 @@ private:
     void update();
     void draw();
 
+    bool loadFontFromFile();
+
     const unsigned int WindowWidth = 600u;
     const unsigned int WindowHeight = 200u;
     const std::string WindowName = "T-Rex Runner";
 
     sf::RenderWindow* pWindow;
+    sf::Font font;
 
-    GameState gameState = GameState();
-    HUD hud = HUD();
+    GameState gameState;
+    HUD hud;
 
     SpriteManager spriteManager = SpriteManager();
     Dinosaur dinosaur = Dinosaur(spriteManager);
     ObstacleManager obstacleManager = ObstacleManager(spriteManager);
+
+    bool isReloadBlocked = true;
 };
 
 }
