@@ -20,12 +20,12 @@ public:
     void setFont(sf::Font& font);
 
 private:
+    void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
     int score = 0;
     int highestScore = 0;
 
     sf::Text text;
-
-    void draw(sf::RenderTarget&, sf::RenderStates) const override;
 };
 
 class HUD : public sf::Drawable
@@ -37,9 +37,9 @@ public:
     void setFont(sf::Font& font) { score.setFont(font); }
 
 private:
-    ScoreDisplay score;
-
     void draw(sf::RenderTarget&, sf::RenderStates) const override;
+
+    ScoreDisplay score;
 };
 
 }

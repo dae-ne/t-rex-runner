@@ -102,9 +102,12 @@ void trex::Game::update()
 void trex::Game::draw()
 {
     pWindow->clear(sf::Color::Red);
+
     obstacleManager.drawObstacles(*pWindow);
     pWindow->draw(dinosaur);
     pWindow->draw(hud);
+    pWindow->draw(gui);
+
     pWindow->display();
 }
 
@@ -112,5 +115,6 @@ bool trex::Game::loadFontFromFile()
 {
     auto result = font.loadFromFile(FONT_PATH);
     hud.setFont(font);
+    gui.setFont(font);
     return result;
 }

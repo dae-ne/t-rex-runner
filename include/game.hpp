@@ -4,6 +4,7 @@
 #include <string>
 
 #include "dinosaur.hpp"
+#include "gui.hpp"
 #include "hud.hpp"
 #include "obstacles.hpp"
 #include "sprites.hpp"
@@ -51,6 +52,7 @@ private:
     sf::Font font;
 
     GameState gameState;
+    GUI gui = GUI(gameState);
     HUD hud;
 
     SpriteManager spriteManager = SpriteManager();
