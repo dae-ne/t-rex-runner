@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
+#include "config.hpp"
 #include "dinosaur.hpp"
 #include "gui.hpp"
 #include "hud.hpp"
@@ -29,7 +30,7 @@ struct LoadingFilesResult
 class Game
 {
 public:
-    Game();
+    Game(Config&);
     ~Game();
 
     LoadingFilesResult loadFiles();
@@ -44,12 +45,10 @@ private:
 
     bool loadFontFromFile();
 
-    const unsigned int WindowWidth = 600u;
-    const unsigned int WindowHeight = 200u;
-    const std::string WindowName = "T-Rex Runner";
-
     sf::RenderWindow* pWindow;
     sf::Font font;
+
+    Config& config;
 
     GameState gameState;
     GUI gui = GUI(gameState);

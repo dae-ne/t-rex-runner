@@ -1,8 +1,10 @@
 #include "game.hpp"
 
-trex::Game::Game()
+trex::Game::Game(Config& config) : config(config)
 {
-    pWindow = new sf::RenderWindow({ WindowWidth, WindowHeight }, WindowName,
+    sf::VideoMode mode = { config.windowWidth, config.windowHeight };
+
+    pWindow = new sf::RenderWindow(mode, config.windowTitle,
         sf::Style::Titlebar | sf::Style::Close);
     
     pWindow->setFramerateLimit(60);
