@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "config.hpp"
 #include "state.hpp"
 
 namespace trex {
@@ -9,6 +10,7 @@ namespace trex {
 class ScoreDisplay : public sf::Drawable
 {
 public:
+    void configure(Config&);
     void update(GameState&);
 
     int getScore() const { return score; }
@@ -29,6 +31,7 @@ private:
 class HUD : public sf::Drawable
 {
 public:
+    void configure(Config&);
     void update(GameState&);
 
     void setHighestScore(int score) { this->score.setHighestScore(score); }

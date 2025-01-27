@@ -45,5 +45,6 @@ int main()
         return 1;
     }
 
+    game.configureUI();
     game.mainloop();
 }

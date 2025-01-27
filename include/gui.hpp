@@ -2,13 +2,15 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <state.hpp>
+#include "config.hpp"
+#include "state.hpp"
 
 namespace trex {
 
 class GameOverScreen : public sf::Drawable
 {
 public:
+    void configure(Config&);
     void setFont(sf::Font&);
 
 private:
@@ -22,6 +24,7 @@ class GUI : public sf::Drawable
 public:
     GUI(GameState& gs) : gameState(gs) {}
 
+    void configure(Config&);
     void setFont(sf::Font&);
 
 private:

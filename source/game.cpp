@@ -9,9 +9,10 @@ trex::Game::Game(Config& config) : config(config)
     };
 
     auto style = sf::Style::Titlebar | sf::Style::Close;
-
     window.create(mode, config.WindowTitle, style);
     window.setFramerateLimit(config.FramerateLimit);
+
+    hud.configure(config);
 }
 
 trex::LoadingFilesResult trex::Game::loadFiles(Config& config)
@@ -23,6 +24,12 @@ trex::LoadingFilesResult trex::Game::loadFiles(Config& config)
         return { "Failed to load font!" };
 
     return {};
+}
+
+void trex::Game::configureUI()
+{
+    gui.configure(config);
+    hud.configure(config);
 }
 
 void trex::Game::mainloop()
@@ -105,7 +112,7 @@ void trex::Game::update()
 
 void trex::Game::draw()
 {
-    window.clear(sf::Color::Red);
+    window.clear(sf::Color::Color(186, 167, 153));
 
     obstacleManager.drawObstacles(window);
     window.draw(dinosaur);

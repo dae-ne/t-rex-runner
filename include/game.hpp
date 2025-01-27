@@ -33,6 +33,7 @@ public:
     Game(Config&);
 
     LoadingFilesResult loadFiles(Config&);
+    void configureUI();
     void mainloop();
 
 private:
