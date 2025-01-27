@@ -5,7 +5,7 @@ void trex::Obstacle::update(GameState& gameState)
     if (gameState.getState() != GameState::State::Running)
         return;
 
-    position.x -= 8.0f;
+    position.x -= 8.f;
 }
 
 void trex::Obstacle::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -50,11 +50,14 @@ trex::ObstacleManager::ObstacleManager(SpriteManager& spriteManager)
     birdSize = spriteManager.getSize(SpriteType::BirdAnimation1);
 }
 
+trex::ObstacleManager::~ObstacleManager()
+{
+    removeAllObstacles();
+}
+
 void trex::ObstacleManager::generateRandomObstacle()
 {
-    int selection = rand() % 3;
-
-    switch (selection)
+    switch (rand() % 3)
     {
     case 0:
         obstacles.push(new ObstacleSmallCactus(spriteManager));

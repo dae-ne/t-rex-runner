@@ -8,12 +8,29 @@ struct Config
 {
     // WINDOW //
 
-    std::string windowTitle;
-    
-    unsigned int windowWidth;
-    unsigned int windowHeight;
-    unsigned int windowPadding;
-    unsigned int bitsPerPixel;
+    const std::string WindowTitle;
+
+    const unsigned int WindowWidth;
+    const unsigned int WindowHeight;
+    const unsigned int WindowPadding;
+    const unsigned int FramerateLimit;
+
+
+    // COLORS //
+
+    const unsigned int BitsPerPixel;
+
+
+    // GAME //
+
+    const float DinosaurXPosition;
+    const float GroundYPosition;
+    const float InitialJumpSpeed;
+    const float GravitationalAcceleration;
+
+
+    // PATHS //
+    const std::string FontPath;
 
 };
 

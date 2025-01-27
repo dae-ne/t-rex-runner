@@ -4,8 +4,6 @@
 
 #include "state.hpp"
 
-#define FONT_PATH "assets/font.ttf"
-
 namespace trex {
 
 class ScoreDisplay : public sf::Drawable

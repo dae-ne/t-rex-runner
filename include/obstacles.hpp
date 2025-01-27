@@ -49,6 +49,7 @@ class ObstacleManager
 {
 public:
     ObstacleManager(SpriteManager&);
+    ~ObstacleManager();
 
     void generateRandomObstacle();
     void popObstacle();
@@ -60,7 +61,7 @@ public:
     bool isColliding(sf::FloatRect boundingBox);
 
 private:
-    int timeElapsedSinceLastObstacleMs = -4000;
+    int timeElapsedSinceLastObstacleMs = -4000; // TODO: update logic
 
     sf::Vector2f smallCactusSize;
     sf::Vector2f largeCactusSize;

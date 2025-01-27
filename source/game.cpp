@@ -3,23 +3,23 @@
 trex::Game::Game(Config& config) : config(config)
 {
     sf::VideoMode mode = {
-        config.windowWidth,
-        config.windowHeight,
-        config.bitsPerPixel
+        config.WindowWidth,
+        config.WindowHeight,
+        config.BitsPerPixel
     };
 
     auto style = sf::Style::Titlebar | sf::Style::Close;
 
-    window.create(mode, config.windowTitle, style);
-    window.setFramerateLimit(60);
+    window.create(mode, config.WindowTitle, style);
+    window.setFramerateLimit(config.FramerateLimit);
 }
 
-trex::LoadingFilesResult trex::Game::loadFiles()
+trex::LoadingFilesResult trex::Game::loadFiles(Config& config)
 {
     if (!spriteManager.loadTextureFromFile())
         return { "Failed to load texture!" };
 
-    if (!loadFontFromFile())
+    if (!loadFontFromFile(config.FontPath))
         return { "Failed to load font!" };
 
     return {};
@@ -85,6 +85,8 @@ void trex::Game::control()
     {
         dinosaur.jump();
     }
+
+    // TODO: crouching
 }
 
 void trex::Game::update()
@@ -113,9 +115,9 @@ void trex::Game::draw()
     window.display();
 }
 
-bool trex::Game::loadFontFromFile()
+bool trex::Game::loadFontFromFile(std::string path)
 {
-    auto result = font.loadFromFile(FONT_PATH);
+    auto result = font.loadFromFile(path);
     hud.setFont(font);
     gui.setFont(font);
     return result;

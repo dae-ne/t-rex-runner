@@ -1,8 +1,12 @@
 #include "dinosaur.hpp"
 
-trex::Dinosaur::Dinosaur(SpriteManager& spriteManager)
-    : spriteManager(spriteManager)
+trex::Dinosaur::Dinosaur(Config& config, SpriteManager& spriteManager)
+    : MinYPosition(config.GroundYPosition)
+    , InitialJumpSpeed(config.InitialJumpSpeed)
+    , GravitationalAcceleration(config.GravitationalAcceleration)
+    , spriteManager(spriteManager)
 {
+    position = { config.DinosaurXPosition, config.GroundYPosition };
     size = spriteManager.getSize(SpriteType::DinosaurStanding);
 }
 
@@ -11,7 +15,7 @@ void trex::Dinosaur::jump()
     if (currentJumpHight > 0.f)
         return;
 
-    currentJumpSpeed = 10.f;
+    currentJumpSpeed = InitialJumpSpeed;
 }
 
 void trex::Dinosaur::update(GameState& gameState)
@@ -32,7 +36,7 @@ void trex::Dinosaur::update(GameState& gameState)
     }
 
     currentJumpHight += currentJumpSpeed;
-    position.y = TREX_MIN_Y_POSITION - currentJumpHight;
+    position.y = MinYPosition - currentJumpHight;
 
     if (currentJumpHight > 0.f)
     {
@@ -63,5 +67,5 @@ void trex::Dinosaur::resetPosition()
 {
     currentJumpSpeed = 0.f;
     currentJumpHight = 0.f;
-    position.y = TREX_MIN_Y_POSITION;
+    position.y = MinYPosition;
 }

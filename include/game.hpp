@@ -32,7 +32,7 @@ class Game
 public:
     Game(Config&);
 
-    LoadingFilesResult loadFiles();
+    LoadingFilesResult loadFiles(Config&);
     void mainloop();
 
 private:
@@ -42,7 +42,7 @@ private:
     void update();
     void draw();
 
-    bool loadFontFromFile();
+    bool loadFontFromFile(std::string path);
 
     sf::RenderWindow window;
     sf::Font font;
@@ -54,7 +54,7 @@ private:
     HUD hud;
 
     SpriteManager spriteManager = SpriteManager();
-    Dinosaur dinosaur = Dinosaur(spriteManager);
+    Dinosaur dinosaur = Dinosaur(config, spriteManager);
     ObstacleManager obstacleManager = ObstacleManager(spriteManager);
 
     bool isReloadBlocked = true;
