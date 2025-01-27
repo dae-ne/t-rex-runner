@@ -112,7 +112,7 @@ void trex::Game::update()
 
 void trex::Game::draw()
 {
-    window.clear(sf::Color::Color(186, 167, 153));
+    window.clear(sf::Color(186, 167, 153));
 
     obstacleManager.drawObstacles(window);
     window.draw(dinosaur);
