@@ -1,6 +1,6 @@
 #include "game.hpp"
 
-trex::Game::Game(Config& config) : config(config)
+Game::Game(Config& config) : config(config)
 {
     sf::VideoMode mode = {
         config.WindowWidth,
@@ -15,7 +15,7 @@ trex::Game::Game(Config& config) : config(config)
     hud.configure(config);
 }
 
-trex::LoadingFilesResult trex::Game::loadFiles(Config& config)
+LoadingFilesResult Game::loadFiles(Config& config)
 {
     if (!spriteManager.loadTextureFromFile())
         return { "Failed to load texture!" };
@@ -26,13 +26,13 @@ trex::LoadingFilesResult trex::Game::loadFiles(Config& config)
     return {};
 }
 
-void trex::Game::configureUI()
+void Game::configureUI()
 {
     gui.configure(config);
     hud.configure(config);
 }
 
-void trex::Game::mainloop()
+void Game::mainloop()
 {
     while (window.isOpen())
     {
@@ -44,7 +44,7 @@ void trex::Game::mainloop()
     }
 }
 
-void trex::Game::handleEvents()
+void Game::handleEvents()
 {
     auto state = gameState.getState();
 
@@ -86,7 +86,7 @@ void trex::Game::handleEvents()
     }
 }
 
-void trex::Game::control()
+void Game::control()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
@@ -96,7 +96,7 @@ void trex::Game::control()
     // TODO: crouching
 }
 
-void trex::Game::update()
+void Game::update()
 {
     gameState.update();
     dinosaur.update(gameState);
@@ -110,7 +110,7 @@ void trex::Game::update()
         gameState.setState(GameState::State::Running);
 }
 
-void trex::Game::draw()
+void Game::draw()
 {
     window.clear(sf::Color(186, 167, 153));
 
@@ -122,7 +122,7 @@ void trex::Game::draw()
     window.display();
 }
 
-bool trex::Game::loadFontFromFile(std::string path)
+bool Game::loadFontFromFile(std::string path)
 {
     auto result = font.loadFromFile(path);
     hud.setFont(font);

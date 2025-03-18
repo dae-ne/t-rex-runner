@@ -5,8 +5,6 @@
 #include "config.hpp"
 #include "state.hpp"
 
-namespace trex {
-
 class ScoreDisplay : public sf::Drawable
 {
 public:
@@ -42,5 +40,3 @@ private:
 
     ScoreDisplay score;
 };
-
-}

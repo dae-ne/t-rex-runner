@@ -4,8 +4,6 @@
 
 #define TEXTURE_PATH "assets/texture.png"
 
-namespace trex {
-
 enum class SpriteType
 {
     DinosaurStanding,
@@ -31,5 +29,3 @@ private:
     sf::Sprite sprite;
     sf::Texture texture;
 };
-
-}

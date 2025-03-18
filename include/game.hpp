@@ -11,8 +11,6 @@
 #include "sprites.hpp"
 #include "state.hpp"
 
-namespace trex {
-
 struct LoadingFilesResult
 {
     LoadingFilesResult() = default;
@@ -60,5 +58,3 @@ private:
 
     bool isReloadBlocked = true;
 };
-
-}

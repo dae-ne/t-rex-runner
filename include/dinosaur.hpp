@@ -6,8 +6,6 @@
 #include "sprites.hpp"
 #include "state.hpp"
 
-namespace trex {
-
 class Dinosaur : public sf::Drawable
 {
 public:
@@ -36,5 +34,3 @@ private:
     float currentJumpHight = 0.f;
     float currentJumpSpeed = 0.f;
 };
-
-}

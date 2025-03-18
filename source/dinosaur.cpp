@@ -1,6 +1,6 @@
 #include "dinosaur.hpp"
 
-trex::Dinosaur::Dinosaur(Config& config, SpriteManager& spriteManager)
+Dinosaur::Dinosaur(Config& config, SpriteManager& spriteManager)
     : MinYPosition(config.GroundYPosition)
     , InitialJumpSpeed(config.InitialJumpSpeed)
     , GravitationalAcceleration(config.GravitationalAcceleration)
@@ -10,7 +10,7 @@ trex::Dinosaur::Dinosaur(Config& config, SpriteManager& spriteManager)
     size = spriteManager.getSize(SpriteType::DinosaurStanding);
 }
 
-void trex::Dinosaur::jump()
+void Dinosaur::jump()
 {
     if (currentJumpHight > 0.f)
         return;
@@ -18,7 +18,7 @@ void trex::Dinosaur::jump()
     currentJumpSpeed = InitialJumpSpeed;
 }
 
-void trex::Dinosaur::update(GameState& gameState)
+void Dinosaur::update(GameState& gameState)
 {
     auto state = gameState.getState();
 
@@ -52,18 +52,18 @@ void trex::Dinosaur::update(GameState& gameState)
         : SpriteType::DinosaurRunningAnimation2;
 }
 
-sf::FloatRect trex::Dinosaur::getBoundingBox() const
+sf::FloatRect Dinosaur::getBoundingBox() const
 {
     return { position, size };
 }
 
-void trex::Dinosaur::draw(sf::RenderTarget& target, sf::RenderStates) const
+void Dinosaur::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
     spriteManager.setSprite(currentSprite, position);
     target.draw(spriteManager.getSprite());
 }
 
-void trex::Dinosaur::resetPosition()
+void Dinosaur::resetPosition()
 {
     currentJumpSpeed = 0.f;
     currentJumpHight = 0.f;

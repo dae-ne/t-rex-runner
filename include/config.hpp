@@ -2,8 +2,6 @@
 
 #include <string>
 
-namespace trex {
-
 struct Config
 {
     // WINDOW //
@@ -33,5 +31,3 @@ struct Config
     const std::string FontPath;
 
 };
-
-}

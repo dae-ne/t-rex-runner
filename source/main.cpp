@@ -5,7 +5,7 @@
 
 int main()
 {
-    trex::Config config = {
+    Config config = {
 
         // WINDOW //
 
@@ -36,7 +36,7 @@ int main()
     };
     
 
-    auto game = trex::Game(config);
+    auto game = Game(config);
     auto [success, errorMessage] = game.loadFiles(config);
 
     if (!success)

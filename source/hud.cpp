@@ -16,7 +16,7 @@ std::string getFullScoreString(int score, int highestScore)
     return "HI " + highestScorePadding + highestScoreString + " " + scorePadding + scoreString;
 }
 
-void trex::ScoreDisplay::configure(Config& config)
+void ScoreDisplay::configure(Config& config)
 {
     auto globalBounds = text.getGlobalBounds();
     text.setOrigin(globalBounds.width, 0.f);
@@ -30,33 +30,33 @@ void trex::ScoreDisplay::configure(Config& config)
     text.setPosition(windowWidth - windowPadding, windowPadding);
 }
 
-void trex::ScoreDisplay::update(GameState &gameState)
+void ScoreDisplay::update(GameState &gameState)
 {
     auto scoreString = getFullScoreString(gameState.getScore(), gameState.getHighestScore());   
     text.setString(scoreString);
 }
 
-void trex::ScoreDisplay::setFont(sf::Font& font)
+void ScoreDisplay::setFont(sf::Font& font)
 {
     text.setFont(font);
 }
 
-void trex::ScoreDisplay::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void ScoreDisplay::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(text);
 }
 
-void trex::HUD::configure(Config& config)
+void HUD::configure(Config& config)
 {
     score.configure(config);
 }
 
-void trex::HUD::update(GameState &gameState)
+void HUD::update(GameState &gameState)
 {
     score.update(gameState);
 }
 
-void trex::HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void HUD::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(score);
 }

@@ -6,8 +6,6 @@
 #include "sprites.hpp"
 #include "state.hpp"
 
-namespace trex {
-
 class Obstacle : public sf::Drawable
 {
 public:
@@ -71,5 +69,3 @@ private:
 
     std::queue<Obstacle*> obstacles;
 };
-
-}

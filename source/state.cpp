@@ -1,6 +1,6 @@
 #include "state.hpp"
 
-void trex::Score::update(int timeMs)
+void Score::update(int timeMs)
 {
     score = timeMs / 100;
 
@@ -10,7 +10,7 @@ void trex::Score::update(int timeMs)
     }
 }
 
-void trex::FrameIndexCalculator::update(int elapsedTime)
+void FrameIndexCalculator::update(int elapsedTime)
 {
     if (elapsedTime - elapsedTimeSinceLastFrameUpdate < frameTimeMs)
         return;
@@ -23,7 +23,7 @@ void trex::FrameIndexCalculator::update(int elapsedTime)
     elapsedTimeSinceLastFrameUpdate = elapsedTime;
 }
 
-void trex::GameState::update()
+void GameState::update()
 {
     if (state != State::Running)
         return;
@@ -34,7 +34,7 @@ void trex::GameState::update()
     frameIndexCalculator.update(elapsedTime);
 }
 
-void trex::GameState::setState(State state)
+void GameState::setState(State state)
 {
     if (this->state == state)
         return;

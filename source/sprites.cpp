@@ -1,13 +1,13 @@
 #include "sprites.hpp"
 
-bool trex::SpriteManager::loadTextureFromFile()
+bool SpriteManager::loadTextureFromFile()
 {
     bool result = texture.loadFromFile(TEXTURE_PATH);
     sprite.setTexture(texture);
     return result;
 }
 
-void trex::SpriteManager::setSprite(SpriteType spriteType, sf::Vector2f position)
+void SpriteManager::setSprite(SpriteType spriteType, sf::Vector2f position)
 {
     switch (spriteType)
     {
@@ -40,7 +40,7 @@ void trex::SpriteManager::setSprite(SpriteType spriteType, sf::Vector2f position
     sprite.setPosition(position);
 }
 
-sf::Vector2f trex::SpriteManager::getSize(SpriteType spriteType)
+sf::Vector2f SpriteManager::getSize(SpriteType spriteType)
 {
     setSprite(spriteType, { 0.f, 0.f });
     auto globalBounds = sprite.getGlobalBounds();

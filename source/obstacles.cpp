@@ -1,6 +1,6 @@
 #include "obstacles.hpp"
 
-void trex::Obstacle::update(GameState& gameState)
+void Obstacle::update(GameState& gameState)
 {
     if (gameState.getState() != GameState::State::Running)
         return;
@@ -8,32 +8,32 @@ void trex::Obstacle::update(GameState& gameState)
     position.x -= 8.f;
 }
 
-void trex::Obstacle::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Obstacle::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     spriteManager.setSprite(currentSprite, position);
     target.draw(spriteManager.getSprite());
 }
 
-trex::ObstacleSmallCactus::ObstacleSmallCactus(SpriteManager& spriteManager)
+ObstacleSmallCactus::ObstacleSmallCactus(SpriteManager& spriteManager)
     : Obstacle(spriteManager)
 {
     currentSprite = SpriteType::SmallCactus;
 }
 
-trex::ObstacleLargeCactus::ObstacleLargeCactus(SpriteManager& spriteManager)
+ObstacleLargeCactus::ObstacleLargeCactus(SpriteManager& spriteManager)
     : Obstacle(spriteManager)
 {
     currentSprite = SpriteType::LargeCactus;
     position.y += 2.f; // adding 2 pixels offset to level the cactus with the ground
 }
 
-trex::ObstacleBird::ObstacleBird(SpriteManager& spriteManager)
+ObstacleBird::ObstacleBird(SpriteManager& spriteManager)
     : Obstacle(spriteManager)
 {
     currentSprite = SpriteType::BirdAnimation1;
 }
 
-void trex::ObstacleBird::update(GameState& gameState)
+void ObstacleBird::update(GameState& gameState)
 {
     Obstacle::update(gameState);
 
@@ -42,7 +42,7 @@ void trex::ObstacleBird::update(GameState& gameState)
         : SpriteType::BirdAnimation2;
 }
 
-trex::ObstacleManager::ObstacleManager(SpriteManager& spriteManager)
+ObstacleManager::ObstacleManager(SpriteManager& spriteManager)
     : spriteManager(spriteManager)
 {
     smallCactusSize = spriteManager.getSize(SpriteType::SmallCactus);
@@ -50,12 +50,12 @@ trex::ObstacleManager::ObstacleManager(SpriteManager& spriteManager)
     birdSize = spriteManager.getSize(SpriteType::BirdAnimation1);
 }
 
-trex::ObstacleManager::~ObstacleManager()
+ObstacleManager::~ObstacleManager()
 {
     removeAllObstacles();
 }
 
-void trex::ObstacleManager::generateRandomObstacle()
+void ObstacleManager::generateRandomObstacle()
 {
     switch (rand() % 3)
     {
@@ -71,19 +71,19 @@ void trex::ObstacleManager::generateRandomObstacle()
     }
 }
 
-void trex::ObstacleManager::popObstacle()
+void ObstacleManager::popObstacle()
 {
     delete obstacles.front();
     obstacles.pop();
 }
 
-void trex::ObstacleManager::removeAllObstacles()
+void ObstacleManager::removeAllObstacles()
 {
     for (size_t i = 0; i < obstacles.size(); i++)
         popObstacle();
 }
 
-void trex::ObstacleManager::updateObstacles(GameState& gameState)
+void ObstacleManager::updateObstacles(GameState& gameState)
 {
     if (gameState.getState() == GameState::State::Start)
     {
@@ -117,7 +117,7 @@ void trex::ObstacleManager::updateObstacles(GameState& gameState)
     }
 }
 
-void trex::ObstacleManager::drawObstacles(sf::RenderTarget& target)
+void ObstacleManager::drawObstacles(sf::RenderTarget& target)
 {
     for (size_t i = 0; i < obstacles.size(); i++)
     {
@@ -128,7 +128,7 @@ void trex::ObstacleManager::drawObstacles(sf::RenderTarget& target)
     }
 }
 
-bool trex::ObstacleManager::isColliding(sf::FloatRect boundingBox)
+bool ObstacleManager::isColliding(sf::FloatRect boundingBox)
 {
     if (obstacles.empty())
         return false;

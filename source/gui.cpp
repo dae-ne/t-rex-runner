@@ -1,6 +1,6 @@
 #include "gui.hpp"
 
-void trex::GameOverScreen::configure(Config& config)
+void GameOverScreen::configure(Config& config)
 {
     text.setString("GAME OVER");
     text.setFillColor(sf::Color::Black);
@@ -10,27 +10,27 @@ void trex::GameOverScreen::configure(Config& config)
     text.setPosition(config.WindowWidth / 2, config.WindowHeight / 2);
 }
 
-void trex::GameOverScreen::setFont(sf::Font &font)
+void GameOverScreen::setFont(sf::Font &font)
 {
     text.setFont(font);
 }
 
-void trex::GameOverScreen::draw(sf::RenderTarget& target, sf::RenderStates ) const
+void GameOverScreen::draw(sf::RenderTarget& target, sf::RenderStates ) const
 {
     target.draw(text);
 }
 
-void trex::GUI::configure(Config& config)
+void GUI::configure(Config& config)
 {
     gameOverScreen.configure(config);
 }
 
-void trex::GUI::setFont(sf::Font &font)
+void GUI::setFont(sf::Font &font)
 {
     gameOverScreen.setFont(font);
 }
 
-void trex::GUI::draw(sf::RenderTarget& target, sf::RenderStates) const
+void GUI::draw(sf::RenderTarget& target, sf::RenderStates) const
 {
     switch (gameState.getState())
     {

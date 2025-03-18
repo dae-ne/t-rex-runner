@@ -2,8 +2,6 @@
 
 #include <SFML/System/Clock.hpp>
 
-namespace trex {
-
 class Score
 {
 public:
@@ -40,7 +38,6 @@ private:
     int elapsedTimeSinceLastFrameUpdate = 0;
 };
 
-
 class GameState
 {
 public:
@@ -70,5 +67,3 @@ private:
     Score score;
     FrameIndexCalculator frameIndexCalculator = FrameIndexCalculator(8, 100);
 };
-
-}

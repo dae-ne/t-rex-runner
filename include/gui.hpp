@@ -5,8 +5,6 @@
 #include "config.hpp"
 #include "state.hpp"
 
-namespace trex {
-
 class GameOverScreen : public sf::Drawable
 {
 public:
@@ -33,5 +31,3 @@ private:
     GameState& gameState;
     GameOverScreen gameOverScreen;
 };
-
-}

@@ -2,11 +2,10 @@
   <img src="logo.png" alt="Logo" width="150">
 </p>
 
-<div align="center" style="max-width: 600px; margin: 0 auto;">
+<div align="center">
   <p>
     A remake of the classic <strong>T-Rex Runner</strong> game!  
-    Jump and avoid obstacles in this endless runner inspired by the famous Chrome browser offline game.  
-    Built with performance and flexibility in mind using C++ and SFML.
+    Jump and avoid obstacles in this endless runner inspired by the famous Chrome browser offline game.
   </p>
   <p><strong>Note:</strong> This is not a fully finished game. The main mechanics have been implemented, but there is still room for further development.</p>
 </div>
